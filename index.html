@@ -1,82 +1,97 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Oficjalna strona CodeSphare – centrum projektów, technologii i społeczności."/>
-  <title>CodeSphare</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeSphare | Logowanie przez Discord</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      padding: 2rem;
-    }
-
-    img.logo {
-      width: 120px;
-      margin-bottom: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      padding: 4rem 2rem;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin-bottom: 2rem;
+      font-size: 2.5rem;
     }
 
     .button {
       display: inline-block;
-      background: #5865F2;
+      background-color: #5865F2;
       color: white;
       padding: 1rem 2rem;
       border-radius: 8px;
+      font-weight: bold;
       text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s ease;
+      transition: background 0.3s;
+      margin-top: 2rem;
     }
 
     .button:hover {
-      background: #4752C4;
+      background-color: #4752C4;
     }
 
-    footer {
-      margin-top: auto;
-      font-size: 0.9rem;
-      color: #cccccc;
+    .user-info {
+      margin-top: 2rem;
+      display: none;
+    }
+
+    .user-info img {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+    }
+
+    .user-info h2 {
+      margin: 0.5rem 0 0;
     }
   </style>
 </head>
 <body>
 
-  <img src="https://i.imgur.com/hk1Dbzo.png" alt="CodeSphare Logo" class="logo" />
+  <h1>🔐 Zaloguj się przez Discord</h1>
 
-  <h1>👋 Witaj w CodeSphare</h1>
-  <p>
-    Tworzymy nowoczesne rozwiązania, projekty open-source oraz społeczność pasjonatów technologii.<br/>
-    Dołącz do nas i buduj przyszłość razem z nami!
-  </p>
+  <a class="button" id="loginButton">Zaloguj się przez Discord</a>
 
-  <a href="https://dc.codesphare.pl" class="button" target="_blank">💬 Dołącz na Discord</a>
+  <div class="user-info" id="userInfo">
+    <img id="avatar" src="" alt="Avatar użytkownika">
+    <h2 id="username">...</h2>
+    <p>Zalogowano pomyślnie</p>
+  </div>
 
-  <footer>
-    © 2025 CodeSphare • Wszelkie prawa zastrzeżone
-  </footer>
+  <script>
+    const CLIENT_ID = 'TWOJE_CLIENT_ID';
+    const REDIRECT_URI = 'https://twojastrona.pl/callback'; // zmień na swoją domenę
+    const SCOPE = 'identify';
 
+    document.getElementById('loginButton').addEventListener('click', () => {
+      const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${SCOPE}`;
+      window.location.href = url;
+    });
+
+    // Obsługa przekierowania z Discorda
+    async function handleCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+
+      if (code) {
+        // wysyłamy code do backendu
+        const response = await fetch(`/callback?code=${code}`);
+        const data = await response.json();
+
+        if (data.username) {
+          document.getElementById('loginButton').style.display = 'none';
+          document.getElementById('userInfo').style.display = 'block';
+          document.getElementById('username').innerText = data.username;
+          document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`;
+        }
+      }
+    }
+
+    handleCallback();
+  </script>
 </body>
 </html>
-
