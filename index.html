@@ -1,97 +1,256 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeSphare | Logowanie przez Discord</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CodeSphare | Discord + Bot</title>
+  <meta name="description" content="Oficjalna strona CodeSphare – centrum społeczności, technologii i autorskiego bota Discord.">
+  <link rel="icon" href="https://i.imgur.com/hk1Dbzo.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: white;
-      text-align: center;
-      padding: 4rem 2rem;
+    :root {
+      --primary: #5865F2;
+      --background: #0f2027;
+      --foreground: white;
+      --secondary: #2c5364;
     }
 
-    h1 {
-      font-size: 2.5rem;
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, var(--background), #203a43, var(--secondary));
+      color: var(--foreground);
+      scroll-behavior: smooth;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0,0,0,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    header img {
+      width: 50px;
+      border-radius: 12px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
 
     .button {
-      display: inline-block;
-      background-color: #5865F2;
+      background: var(--primary);
       color: white;
       padding: 1rem 2rem;
       border-radius: 8px;
       font-weight: bold;
       text-decoration: none;
       transition: background 0.3s;
-      margin-top: 2rem;
+      display: inline-block;
+      margin-top: 1.5rem;
     }
 
     .button:hover {
-      background-color: #4752C4;
+      background: #4752C4;
     }
 
-    .user-info {
-      margin-top: 2rem;
-      display: none;
+    .stats, .team, .partners {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
     }
 
-    .user-info img {
-      border-radius: 50%;
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      flex: 1 1 250px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .avatar {
       width: 80px;
       height: 80px;
+      border-radius: 50%;
+      margin: auto;
     }
 
-    .user-info h2 {
-      margin: 0.5rem 0 0;
+    footer {
+      background: #111;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .lang-toggle, .theme-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .lang-toggle button, .theme-toggle button {
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 300px;
+      margin-top: 2rem;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
 
-  <h1>🔐 Zaloguj się przez Discord</h1>
+  <header>
+    <img src="https://i.imgur.com/hk1Dbzo.png" alt="CodeSphare Logo">
+    <nav>
+      <a href="#bot">Bot</a>
+      <a href="#o-nas">O nas</a>
+      <a href="#statystyki">Statystyki</a>
+      <a href="#dokumentacja">Wiki</a>
+      <a href="#aktualizacje">Aktualizacje</a>
+      <a href="#discord">Discord</a>
+    </nav>
+  </header>
 
-  <a class="button" id="loginButton">Zaloguj się przez Discord</a>
+  <section class="hero">
+    <h1>👋 Witamy w CodeSphare</h1>
+    <p>Nowoczesna społeczność programistów i graczy wspierana przez autorskiego bota Discord.</p>
+    <a href="#" class="button">Zaloguj się przez Discord</a>
+  </section>
 
-  <div class="user-info" id="userInfo">
-    <img id="avatar" src="" alt="Avatar użytkownika">
-    <h2 id="username">...</h2>
-    <p>Zalogowano pomyślnie</p>
+  <section id="bot">
+    <h2>🤖 Nasz Bot</h2>
+    <p>CodeSphareBot oferuje moderację, integracje, statystyki, muzykę i narzędzia dla serwerów społeczności.</p>
+  </section>
+
+  <section id="o-nas">
+    <h2>🧠 O nas</h2>
+    <p>Jesteśmy zespołem pasjonatów technologii, tworzących rozwiązania open-source i rozwijających społeczność Discord.</p>
+  </section>
+
+  <section id="statystyki">
+    <h2>📊 Statystyki</h2>
+    <div class="stats">
+      <div class="card"><h3>+145</h3><p>Serwerów</p></div>
+      <div class="card"><h3>+5 000</h3><p>Użytkowników</p></div>
+      <div class="card"><h3>+200</h3><p>Komend</p></div>
+    </div>
+  </section>
+
+  <section id="dokumentacja">
+    <h2>📚 Wiki</h2>
+    <p>Dowiedz się jak używać bota i poznaj nasze narzędzia – <a href="#">czytaj dokumentację</a>.</p>
+  </section>
+
+  <section id="aktualizacje">
+    <h2>🛠 Aktualizacje</h2>
+    <ul>
+      <li>✅ Dodano integrację z systemem ticketów – lipiec 2025</li>
+      <li>✅ Optymalizacja bota pod większe serwery – czerwiec 2025</li>
+      <li>✅ Nowy system anty-spam – maj 2025</li>
+    </ul>
+  </section>
+
+  <section id="discord">
+    <h2>📥 Dołącz do nas!</h2>
+    <p>Wejdź na nasz serwer, poznaj społeczność i używaj naszego bota!</p>
+    <a href="https://dc.codesphare.pl" class="button" target="_blank">💬 Dołącz na Discord</a>
+    <iframe src="https://discord.com/widget?id=123456789012345678&theme=dark" allowtransparency="true" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+  </section>
+
+  <section id="zespol">
+    <h2>👨‍💻 Zespół</h2>
+    <div class="team">
+      <div class="card">
+        <img src="https://i.imgur.com/hk1Dbzo.png" class="avatar">
+        <h3>@CodeMaster</h3>
+        <p>Founder & DevOps</p>
+      </div>
+      <div class="card">
+        <img src="https://i.imgur.com/hk1Dbzo.png" class="avatar">
+        <h3>@DesignGuru</h3>
+        <p>UI/UX Designer</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="partnerzy">
+    <h2>🤝 Partnerzy</h2>
+    <div class="partners">
+      <div class="card"><img src="https://via.placeholder.com/100x50" alt="Partner 1"></div>
+      <div class="card"><img src="https://via.placeholder.com/100x50" alt="Partner 2"></div>
+    </div>
+  </section>
+
+  <section id="regulamin">
+    <h2>📄 Regulamin</h2>
+    <p>Korzystając z naszej strony i bota, akceptujesz nasz <a href="#">regulamin</a> i <a href="#">politykę prywatności</a>.</p>
+  </section>
+
+  <footer>
+    © 2025 CodeSphare • Wszelkie prawa zastrzeżone<br>
+    Wersja strony: 1.0.0
+  </footer>
+
+  <div class="lang-toggle">
+    <button onclick="alert('EN w budowie')">🇬🇧 English</button>
+  </div>
+
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()">🌓 Tryb jasny/ciemny</button>
   </div>
 
   <script>
-    const CLIENT_ID = 'TWOJE_CLIENT_ID';
-    const REDIRECT_URI = 'https://twojastrona.pl/callback'; // zmień na swoją domenę
-    const SCOPE = 'identify';
-
-    document.getElementById('loginButton').addEventListener('click', () => {
-      const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${SCOPE}`;
-      window.location.href = url;
-    });
-
-    // Obsługa przekierowania z Discorda
-    async function handleCallback() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-
-      if (code) {
-        // wysyłamy code do backendu
-        const response = await fetch(`/callback?code=${code}`);
-        const data = await response.json();
-
-        if (data.username) {
-          document.getElementById('loginButton').style.display = 'none';
-          document.getElementById('userInfo').style.display = 'block';
-          document.getElementById('username').innerText = data.username;
-          document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png`;
-        }
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+      if(document.body.classList.contains("light-mode")) {
+        document.documentElement.style.setProperty('--background', '#f4f4f4');
+        document.documentElement.style.setProperty('--foreground', '#111');
+      } else {
+        document.documentElement.style.setProperty('--background', '#0f2027');
+        document.documentElement.style.setProperty('--foreground', 'white');
       }
     }
-
-    handleCallback();
   </script>
+
 </body>
 </html>
